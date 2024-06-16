@@ -1,0 +1,63 @@
+@media only screen and (max-width : 740px) {
+    .mota,
+    .soluong,
+    .loai{
+        display: none;
+    }
+    .anhsp img{
+        width: 120px;
+        padding: 10;
+    }
+    .tensp{
+        font-size: small;
+    }
+    .account_main{
+        width: auto;
+        overflow: scroll;
+    }
+    .tbl_account{
+        width: 600px;
+    }
+    .tbl_order{
+        overflow: scroll;
+    }
+    .tbl_order table{
+        width: 800px;
+    }
+    section{
+        margin: 0 auto;
+        /* margin: 0 30px */
+    }
+    nav .out{
+        top: 0;
+    }
+    nav{
+        display: block;
+        line-height: 40px;
+        z-index: 3;
+    }
+    #mobile_menu{
+        display: block;
+    }
+}
+
+@media only screen and (min-width : 741px) and (max-width :1024px) {
+  nav {
+    justify-content: start !important;
+    padding-left: 30px;
+  }
+  .mota
+  {
+    display: none;
+  }
+  .edit{
+    width: 55px;
+  }
+  section{
+    overflow: scroll;
+  }
+  .cover-form{
+    height: 865px;
+  }
+
+}

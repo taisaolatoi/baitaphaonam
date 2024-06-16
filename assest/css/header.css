@@ -1,0 +1,247 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+.header-top .login a:hover ul li a {
+    display: block;
+}
+
+.subacc {
+    position: absolute;
+    list-style: none;
+    top: 33px;
+    right: 16px;
+    display: none;
+}
+
+.header-top .subacc li a {
+    color: #000;
+    background-color: #ccc;
+}
+
+.header-top .subacc li:hover a {
+    background-color: #706e6e;
+}
+
+.header-top {
+    background-color: #212121;
+    display: flex;
+}
+
+.header-top p {
+    line-height: 40px;
+}
+
+.header-top .phone-number,
+.header-top .check-product {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+}
+
+.header-top .phone-number a:hover,
+.header-top .check-product a:hover {
+    background-color: #ccc;
+    color: #000;
+}
+
+.header-top .phone-number {
+    color: red;
+}
+
+.header-top .check-product {
+    align-items: center;
+}
+
+.header-top .check-product a {
+    font-size: 14px;
+    padding: 12px 5px;
+    text-decoration: none;
+    color: #fff;
+}
+
+.header-top .login {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.header-top .login {
+    margin-left: 10px;
+}
+
+.header-top .login i {
+    margin-left: 5px;
+}
+
+.header-top .login span {
+    font-size: small;
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    color: red;
+}
+
+.header-top .login span p {
+    font-weight: bold;
+    color: #fff;
+}
+
+
+.header-mid {
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.header-mid .search-product form {
+    display: flex;
+    width: 100%;
+
+}
+
+.header-mid .logo img {
+    width: 200px;
+    border-radius: 50px;
+    box-shadow: rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px;
+}
+
+.header-mid .logo,
+.header-mid .search-product,
+.header-mid .cart {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+}
+
+.header-mid .search-product {
+    height: 45px;
+    border: 2px solid red;
+}
+
+.header-mid .search-product input {
+    border: none;
+    padding: 10px;
+    flex: 1;
+}
+
+.header-mid .search-product button {
+    border: none;
+    font-size: large;
+    color: red;
+}
+
+.header-mid .search-product i {
+    background-color: #fff;
+}
+
+.header-mid .search-product input:focus {
+    outline: 0;
+}
+
+.header-mid .search-product .search-icon {
+    padding: 10px 20px;
+}
+
+.header-mid .cart a {
+    padding: 10px 10px;
+    color: #E8E8E8;
+    background-color: #000;
+    border: 2px solid #000;
+    border-radius: 10px;
+    box-shadow: 5px 5px 0px #ccc;
+    transition: all 0.3s ease;
+}
+
+.header-mid .cart i {
+    font-size: large;
+    width: 80px;
+    text-align: center;
+}
+
+.header-mid .cart:hover a {
+    background-color: #CDC9C9;
+    color: black;
+    border: 2px solid #696969;
+    ;
+    box-shadow: 5px 5px 0px #CDC9C9;
+}
+
+.header-mid .cart:active a {
+    background-color: #fff;
+    color: #000;
+    box-shadow: none;
+    transform: translateY(4px);
+}
+
+.header-bot {
+    position: sticky;
+    top: 0;
+    z-index: 999;
+}
+
+.header-bot .nav {
+    display: flex;
+    background-color: #000;
+    height: 50px;
+    justify-content: center;
+}
+
+.header-bot .nav,
+.subnav {
+    list-style: none;
+}
+
+.header-bot .nav li {
+    line-height: 50px;
+}
+
+.header-bot .nav>li:hover {
+    background-color: #ccc;
+    cursor: pointer;
+}
+
+.header-bot .nav>li:hover a {
+    color: #000;
+}
+
+.header-bot .nav li a {
+    padding: 0 40px;
+    text-decoration: none;
+    color: #fff;
+}
+
+.header-bot .subnav {
+    display: none;
+    background-color: #ccc;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+}
+
+.header-bot li:hover .subnav {
+    display: block;
+}
+
+.header-bot .subnav li:hover {
+    background-color: #706e6e;
+}
+
+.mobile_menu_btn {
+    color: #fff;
+    position: absolute;
+    right: 0;
+    top: 0;
+    line-height: 33px;
+    display: flex;
+    padding: 8px 20px;
+    font-size: 20px;
+    display: none;
+}
+
+.mobile_menu_btn:hover {
+    background-color: #ccc;
+    color: #212121;
+}
