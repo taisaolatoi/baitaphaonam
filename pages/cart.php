@@ -8,7 +8,8 @@ $cartItems = $_SESSION['cart'];
 $totalCount = 0;
 if (!empty($cartItems)) {
     foreach ($cartItems as $item) {
-        $totalCount += $item[4]; 
+        $totalCount += $item[4];
+
         $_SESSION['totalCount'] = $totalCount;
     }
 }
@@ -16,32 +17,44 @@ if (!empty($cartItems)) {
 
 ?>
 
-    <div class="product_banner_title">
-        <div class="sub-banner">
-            <p><a href="index.php">Trang Chủ</a></p>
-            <p>Giỏ Hàng</p>
-        </div>
-        <div class="cart_title">
-            <p>GIỎ HÀNG(
-                <span>
-                    <?php echo $totalCount; ?>
-                    Sản phẩm
-                </span>)
-            </p>
-        </div>
+<div class="product_banner_title">
+    <div class="sub-banner">
+        <p><a href="index.php">Trang Chủ</a></p>
+        <p>Giỏ Hàng</p>
     </div>
-    <?php
+    <div class="cart_title">
+        <p>GIỎ HÀNG(
+            <span>
+                <?php echo $totalCount; ?>
+                Sản phẩm
+            </span>)
+        </p>
+    </div>
+</div>
+<?php
 
-    if (isset($_SESSION['cart']) && count($cartItems) > 0) {
-        echo '<form action="pages/checkout.php" method="POST">
+if (isset($_SESSION['cart']) && count($cartItems) > 0) {
+    echo '<form action="pages/checkout.php" method="POST">
     <div id="container1">
     <div class="container_all">';
-        $totalPrice = 0;
-        foreach ($cartItems as $item) {
-            echo '<div class="container_product">
+    $totalPrice = 0;
+    $namesizes = array();
+    foreach ($cartItems as $item) {
+        $size = $item[5];
+
+        // Truy vấn và lấy thông tin kích thước từ CSDL
+        $sqlSize = "SELECT namesize FROM size_sanpham WHERE idsize = $size";
+        $resultSize = pg_query($conn, $sqlSize);
+        $row = pg_fetch_assoc($resultSize);
+        $namesize = $row['namesize'];
+
+        $namesizes[] = $namesize; // Lưu giá trị namesize vào mảng namesizes
+
+        echo '<div class="container_product">
             <div class="cart_product">
                 <img src="' . $item[1] . '" alt="">
                 <p class="product_name">' . $item[2] . '<a href="?page=delete_cart&id=' . $item[0] . '">Xoá</a></p>
+                <p> Size: ' . $namesize . ' </p>
                 <p class="product_price">' . number_format($item[3]) . '₫</p>
             </div>
             <div class="input_group_btn">
@@ -51,14 +64,14 @@ if (!empty($cartItems)) {
             </div>
         </div>';
 
-            $totalPrice += $item[3] * $item[4];  // Cập nhật tổng giá
-        }
-        // $_SESSION['$totalCount'] = $totalCount;
-        $_SESSION['$totalPrice'] = $totalPrice;
+        $totalPrice += $item[3] * $item[4];  // Cập nhật tổng giá
+    }
+    // $_SESSION['$totalCount'] = $totalCount;
+    $_SESSION['$totalPrice'] = $totalPrice;
 
 
 
-        echo '</div>
+    echo '</div>
     <div class="cart_submit">
         <div class="total">
             <div class="pay">
@@ -72,13 +85,13 @@ if (!empty($cartItems)) {
     </div>
 </div>
 </form>';
-    } else {
-        echo '<div class="cart_empty">
+} else {
+    echo '<div class="cart_empty">
     <img src="./assest/img/empty-cart.jpg" alt="">
     <a href="index.php"><input type="button" value="TIẾP TỤC LỰA CHỌN"></a>
     </div>';
-    }
-    ?>
+}
+?>
 
 
 

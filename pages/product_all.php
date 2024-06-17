@@ -1,55 +1,30 @@
-<div class="header-product">
-    <div class="product-title">
-        <p>QUẦN ÁO NAM <span></span></p>
+<?php
+$sql = "SELECT danhmuc.iddanhmuc, danhmuc.tendanhmuc,
+       STRING_AGG(loaisanpham.idloai::text || '-' || loaisanpham.tenloai::text, ', ') AS loai_ids,
+       STRING_AGG(SPLIT_PART(loaisanpham.idloai::text || '-' || loaisanpham.tenloai::text, '-', 1), ', ') AS idloai,
+       STRING_AGG(SPLIT_PART(loaisanpham.idloai::text || '-' || loaisanpham.tenloai::text, '-', 2), ', ') AS tenloai
+FROM danhmuc
+JOIN loaisanpham ON danhmuc.iddanhmuc = loaisanpham.iddanhmuc
+GROUP BY danhmuc.iddanhmuc, danhmuc.tendanhmuc";
+$result = pg_query($conn, $sql);
+
+while ($row = pg_fetch_assoc($result)) {
+    $tenloai_array = explode(', ', $row['tenloai']); // Tách chuỗi thành mảng các phần tử
+    $idloai_array = explode(', ', $row['idloai']);
+    echo '<div class="header-product">
+        <div class="product-title">
+            <p>' . $row['tendanhmuc'] . '<span></span></p>
+        </div>
     </div>
-    <ul class="product-sub-title">
-        <li><a href="index.php?page=product_type&type=Áo Thể Thao Nam">Áo Thể Thao Nam</a></li>
-        <li><a href="index.php?page=product_type&type=Quần Thể Thao Nam">Quần Thể Thao Nam</a></li>
-    </ul>
-</div>
-<div class="container-product">
-    <?php
-    getProduct(5, 'Nam');
-    ?>
-</div>
-<div class="more-btn-product">
-    <p><a href="index.php?page=product_type&type=Đồ Thể Thao Nam">XEM THÊM</a></p>
+    <div class="container-product">';
+    
+    // Lặp qua từng cặp idloai và tenloai tương ứng
+    for ($i = 0; $i < count($idloai_array); $i++) {
+        getProduct(5, $idloai_array[$i], $tenloai_array[$i]);
+    }
 
-</div>
-
-<div class="header-product">
-    <div class="product-title">
-        <p>QUẦN ÁO NỮ <span></span></p>
-    </div>
-    <ul class="product-sub-title">
-        <li><a href="index.php?page=product_type&type=Áo Thể Thao Nữ">Áo Thể Thao Nữ</a></li>
-        <li><a href="index.php?page=product_type&type=Quần Thể Thao Nữ">Quần Thể Thao Nữ</a></li>
-    </ul>
-</div>
-<div class="container-product">
-    <?php
-    getProduct(5, 'Nữ');
-    ?>
-</div>
-<div class="more-btn-product">
-    <p><a href="index.php?page=product_type&type=Đồ Thể Thao Nữ">XEM THÊM</a></p>
-</div>
-
-<div class="header-product">
-    <div class="product-title">
-        <p>PHỤ KIỆN THỂ THAO<span></span></p>
-    </div>
-    <ul class="product-sub-title">
-        <li><a href="index.php?page=product_type&type=Phụ Kiện">Phụ Kiện</a></li>
-
-    </ul>
-</div>
-<div class="container-product">
-    <?php
-    getProduct(5, 'Phụ Kiện');
-    ?>
-</div>
-<div class="more-btn-product">
-    <p><a href="index.php?page=product_type&type=Phụ Kiện">XEM THÊM</a></p>
-
-</div>
+    echo '</div>
+    <div class="more-btn-product">
+        <p class="more_view" style="width: max-content; margin: 0 auto;"><a href="index.php?page=product_type&type=' . $idloai_array[0] . '">XEM THÊM</a></p>';
+}
+?>

@@ -1,124 +1,33 @@
 <?php
 if (isset($_GET['type'])) {
-    switch ($_GET['type']) {
-        case 'Đồ Thể Thao Nam':
-            echo '<div class="product-banner">
+    $id = $_GET['type'];
+    $sql = "SELECT * from loaisanpham where idloai = $id";
+    $result = pg_query($conn, $sql);
+
+    while ($row = pg_fetch_assoc($result)) {
+        $idloai = $row['idloai'];
+        echo '<div class="product-banner">
                 <img src="./assest/img/center/breadcrumb.webp" alt="">
             </div>
             <div class="product-banner-title">
                 <div class="sub-banner">
                     <p><a href="index.php">Trang Chủ</a></p>
-                    <p>' . $_GET['type'] . '</p>
+                    <p>' . $row['tenloai'] . '</p>
                 </div>
             </div>
             <div class="container-product">';
-            echo getProductAll('Nam'); // Lấy danh sách sản phẩm
-
-            break;
-
-
-        case 'Đồ Thể Thao Nữ':
-            echo '<div class="product-banner">
-                <img src="./assest/img/center/breadcrumb.webp" alt="">
-            </div>
-            <div class="product-banner-title">
-                <div class="sub-banner">
-                    <p><a href="index.php">Trang Chủ</a></p>
-                    <p>' . $_GET['type'] . '</p>
-                </div>
-            </div>
-            <div class="container-product">';
-            echo getProductAll('Nữ');
-
-
-            break;
-
-        case 'Phụ Kiện':
-            echo '<div class="product-banner">
-                <img src="./assest/img/center/breadcrumb.webp" alt="">
-            </div>
-            <div class="product-banner-title">
-                <div class="sub-banner">
-                    <p><a href="index.php">Trang Chủ</a></p>
-                    <p>' . $_GET['type'] . '</p>
-                </div>
-            </div>
-            <div class="container-product">';
-            echo getProduct_type('Phụ Kiện','Nam');
-            break;
-        
-            case 'Áo Thể Thao Nam':
-                echo '<div class="product-banner">
-                    <img src="./assest/img/center/breadcrumb.webp" alt="">
-                </div>
-                <div class="product-banner-title">
-                    <div class="sub-banner">
-                        <p><a href="index.php">Trang Chủ</a></p>
-                        <p>' . $_GET['type'] . '</p>
-                    </div>
-                </div>
-                <div class="container-product">';
-                echo getProduct_type('Áo','Nam');
-                echo '</div>';
-                
-                break;
-            case 'Quần Thể Thao Nam':
-                    echo '<div class="product-banner">
-                        <img src="./assest/img/center/breadcrumb.webp" alt="">
-                    </div>
-                    <div class="product-banner-title">
-                        <div class="sub-banner">
-                            <p><a href="index.php">Trang Chủ</a></p>
-                            <p>' . $_GET['type'] . '</p>
-                        </div>
-                    </div>
-                    <div class="container-product">';
-                    echo getProduct_type('Quần','Nam');
-                   
-                    break;
-            case 'Áo Thể Thao Nữ':
-                    echo '<div class="product-banner">
-                        <img src="./assest/img/center/breadcrumb.webp" alt="">
-                    </div>
-                    <div class="product-banner-title">
-                        <div class="sub-banner">
-                            <p><a href="index.php">Trang Chủ</a></p>
-                            <p>' . $_GET['type'] . '</p>
-                        </div>
-                    </div>
-                    <div class="container-product">';
-                    echo getProduct_type('Áo','Nữ');
-                   
-                    break;
-             case 'Quần Thể Thao Nữ':
-                    echo '<div class="product-banner">
-                        <img src="./assest/img/center/breadcrumb.webp" alt="">
-                    </div>
-                    <div class="product-banner-title">
-                        <div class="sub-banner">
-                            <p><a href="index.php">Trang Chủ</a></p>
-                            <p>' . $_GET['type'] . '</p>
-                        </div>
-                    </div>
-                    <div class="container-product">';
-                    echo getProduct_type('Quần','Nữ');
-                    
-                    break;
-
-        default:
-            echo 'vádasdsd';
-            break;
+        echo getProductAll($idloai); // Lấy danh sách sản phẩm
     }
-   
 }
 ?>
 <style>
-    h3{
+    h3 {
         padding: 50px;
         margin: 0 auto;
         color: red;
         font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     }
+
     .container-product {
         flex-wrap: wrap;
     }

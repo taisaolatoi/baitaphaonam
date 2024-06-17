@@ -7,9 +7,10 @@
     overflow: auto;
 }
 
-.container_all {
+.container_all_orders {
     display: flex;
     justify-content: space-around;
+    flex-direction: row;
     position: relative;
     margin: 15px;
 
@@ -21,8 +22,8 @@
 }
 
 .product-quantity {
-    right: 6%;
-    top: 27%;
+    right: 0%;
+    top: -5%;
     position: absolute;
     border: 1px solid #ccc;
     background-color: cornflowerblue;

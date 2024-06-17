@@ -16,6 +16,8 @@ require('./pages/db.php');
     <link rel="stylesheet" href="./assest/css/reponsive.css">
     <script src="https://kit.fontawesome.com/a3c3a500ec.js" crossorigin="anonymous"></script>
 
+    
+
     <title>Sport Shop</title>
 </head>
 

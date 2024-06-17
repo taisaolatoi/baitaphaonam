@@ -58,6 +58,13 @@ require './pages/search_form.php';
     i {
         padding: 5px;
     }
+
+    .d-flex {
+        justify-content: center;
+        border: none;
+        margin-top: 25%;
+        gap: 10px;
+    }
 </style>
 
 </html>

@@ -2,10 +2,11 @@
 if (isset($_GET["id"])) {
     $productId = $_GET['id'];
 }
+
 ?>
 
 
-    <!-- <style>
+<!-- <style>
         * {
             padding: 0;
             margin: 0;
@@ -335,9 +336,10 @@ if (isset($_GET["id"])) {
         }
     </style> -->
 
-    <?php
-    $row = getDetailProduct($productId);
-    echo '<form action="?page=addtocart" method="POST">
+<?php
+$row = getDetailProduct($productId);
+$row1 = get_size_soluong($productId);
+echo '<form action="?page=addtocart" method="POST" id="form_submit">
        <div class="product-banner">
                 <img src="./assest/img/center/breadcrumb.webp" alt="">
             </div>
@@ -347,55 +349,122 @@ if (isset($_GET["id"])) {
                     <p>' . $row['tensanpham'] . '</p>
                 </div>
             </div>';
-    echo '<div class="container">
+echo '<div class="container">
         <div class="detail-img">
             <img src="./assest/img/thethao/' . $row['hinhanh'] . '" alt="">
             <input type="hidden" name="img" value="./assest/img/thethao/' . $row['hinhanh'] . '">
         </div>';
 
-    echo '<div class="detail-content">
-            <h1>' . $row['tensanpham'] . '</h1>
-            <input type="hidden" name="tensp" value="' . $row['tensanpham'] . '">
+echo '<div class="detail-content">
+        <h1>' . $row['tensanpham'] . '</h1>
+        <input type="hidden" name="tensp" value="' . $row['tensanpham'] . '">
+    
+        <p class="product_id">Mã sản phẩm: ' . $productId . '</p>
+        <input type="hidden" name="id" value="' . $row['masanpham'] . '">
+    
+        <p class="special-price">' . number_format($row['gia']) . '₫</p>
+        <input type="hidden" name="price" value="' . $row['gia'] . '">
+    
+        <div class="condition-product">
+            <p>Tình trạng:</p>
+            <p class="condition">Còn hàng</p>
+        </div>
+        <p class="describe">' . $row['mota'] . '</p>
+    
+        <div class="sizes">';
 
-            <p class="product_id">Mã sản phẩm: ' . $productId . '</p>
-            <input type="hidden" name="id" value="' . $row['masanpham'] . '">
+while ($size = pg_fetch_assoc($row1)) {
+    $disabled = $size['soluong'] == 0 ? 'disabled' : '';
+    $color = $size['soluong'] == 0 ? '#ddd' : 'black';
+    echo '<label class="size-label" data-soluong="' . $size['soluong'] . '" for="' . $size['namesize'] . '" style="color: ' . $color . '">
+                      <input type="radio" id="' . $size['namesize'] . '" name="namesize" value="' . $size['idsize'] . '" ' . $disabled . '>
+                      ' . $size['namesize'] . '
+                  </label>';
+}
 
-            <p class="special-price">' . number_format($row['gia']) . '₫</p>
-            <input type="hidden" name="price" value="' . $row['gia'] . '">
+echo '</div>
+    
+        <div class="btn-pay">
+            <button  type="button" class="btn-decrease">-</button>
+            <input style="text-align: center;" type="text" name="quantity" value="1" min="1" max="99" class="num-product" readonly>
+            <button type="button"  class="btn-increase">+</button>
+            <input type="submit" value="Mua Ngay" name="order" class="buy-product"></input>
+        </div>
+    </div>';
 
-            <div class="condition-product">
-                <p>Tình trạng:</p>
-                <p class="condition">Còn hàng</p>
-            </div>
-            <p class="describe">' . $row['mota'] . '</p>
-
-            <div class="btn-pay">
-                <button type="submit" value="" class="btn-decrease">-</button>
-                <input style="text-align: center;" type="text" name="quantity" value="1" class="num-product">
-                <button type="submit" value="" class="btn-increase">+</button>
-                <input type="submit" value="Mua Ngay" name="order"; class="buy-product"></input>
-            </div>';
-
-    echo '</div>
+echo '</div>
         
     </div>
     </form>';
 
 
-    echo '<div class="container_mid">
+echo '<div class="container_mid">
         <div class="container-product1">
         <p class="product_related_title">Sản phẩm cùng loại</p>';
-    getRelatedProduct('' . $row['loai'] . '', 5);
+getRelatedProduct('' . $row['loaisanpham'] . '', 5);
 
-    echo ' </div>
+echo ' </div>
 
         <div class="list_new_product">
             <p class="product_new_title">Mới ra mắt</p>';
 
-    getNewProduct(5);
+getNewProduct(5);
 
-    echo '</div>
+echo '</div>
         
     </div>';
-    ?>
+?>
+<script>
+    // Lấy các phần tử DOM cần thiết
+    const decreaseBtn = document.querySelector('.btn-decrease');
+    const increaseBtn = document.querySelector('.btn-increase');
+    const quantityInput = document.querySelector('.num-product');
 
+    // Xử lý sự kiện khi nhấp vào nút "-"
+    decreaseBtn.addEventListener('click', function () {
+        let quantity = parseInt(quantityInput.value);
+        if (quantity > 1) {
+            quantity--;
+        }
+        quantityInput.value = quantity;
+    });
+
+    // Xử lý sự kiện khi nhấp vào nút "+"
+    increaseBtn.addEventListener('click', function () {
+        let quantity = parseInt(quantityInput.value);
+        quantity++;
+        quantityInput.value = quantity;
+    });
+
+
+    // ------------------------------------------------------
+    const form = document.getElementById('form_submit');
+
+    form.addEventListener('submit', function (event) {
+        const selectedSize = document.querySelector('input[name="namesize"]:checked');
+        if (!selectedSize) {
+            event.preventDefault(); // Ngăn chặn gửi form nếu người dùng chưa chọn size
+            alert('Vui lòng chọn size trước khi mua hàng!');
+        }
+    });
+
+    // --------------------------------------------------------
+
+    const sizeLabels = document.querySelectorAll('.size-label');
+
+    function checkQuantity() {
+        const selectedSize = document.querySelector('input[name="namesize"]:checked');
+        const soluong = parseInt(selectedSize.parentNode.dataset.soluong);
+        const quantity = parseInt(quantityInput.value);
+
+        if (quantity > soluong) {
+            alert('Số lượng sản phẩm chỉ còn ' + soluong);
+            quantityInput.value = soluong;
+        }
+    }
+    const btnIncrease = document.querySelector('.btn-increase');
+    const btnDecrease = document.querySelector('.btn-decrease');
+
+    btnIncrease.addEventListener('click', checkQuantity);
+    btnDecrease.addEventListener('click', checkQuantity);
+</script>

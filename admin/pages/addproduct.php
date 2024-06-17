@@ -17,21 +17,34 @@ if (isset($_POST['add_product']) && $_POST['add_product']) {
 
     // Lấy ID của sản phẩm vừa thêm
     $lastInsertedId = "SELECT masanpham FROM sanpham ORDER BY masanpham DESC LIMIT 1";
-    $result0 = pg_query($conn,$lastInsertedId);
+    $result0 = pg_query($conn, $lastInsertedId);
     $row = pg_fetch_assoc($result0);
-    $masanpham = $row['masanpham']; 
+    $masanpham = $row['masanpham'];
 
 
-    // Lấy dữ liệu từ bảng 'size_sanpham' và thêm vào bảng 'chitietsanpham' với số lượng là 0
-    $sql = "SELECT * FROM size_sanpham";
-    $result1 = pg_query($conn, $sql);
-    while ($row = pg_fetch_assoc($result1)) {
-        $sizeId = $row['idsize'];
-        $queryChiTiet = "INSERT INTO chitietsanpham(idsanpham, idsize, soluong) VALUES ('$masanpham', '$sizeId', '0')";
-        pg_query($conn, $queryChiTiet);
+    $sqlcategory = "SELECT * from danhmuc where iddanhmuc = $category";
+    $resultcategory = pg_query($conn, $sqlcategory);
+    $rowcategory = pg_fetch_assoc($resultcategory);
+    $category_name = $rowcategory['tendanhmuc'];
+
+    if ($category_name == "Áo" || $category_name == "Quần") {
+        $sql = "SELECT * FROM size_sanpham where idsize between 1 and 5";
+    } elseif ($category_name == "Giày" || $category_name == "Dép") {
+        $sql = "SELECT * FROM size_sanpham where idsize between 6 and 11";
+    } else {
+        $sql = "SELECT * FROM size_sanpham where idsize = 0";
     }
 
-    echo '<h3 style="color: red; padding: 30px; text-align: center;">Thêm SP thành công!!</h3>';
+    if ($category_name != "") {
+        $result1 = pg_query($conn, $sql);
+        while ($row = pg_fetch_assoc($result1)) {
+            $sizeId = $row['idsize'];
+            $queryChiTiet = "INSERT INTO chitietsanpham(idsanpham, idsize, soluong) VALUES ('$masanpham', '$sizeId', '0')";
+            pg_query($conn, $queryChiTiet);
+
+        }
+        echo '<h3 style="color: red; padding: 30px; text-align: center;">Thêm SP thành công!!</h3>';
+    }
 }
 ?>
 

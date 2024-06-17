@@ -55,7 +55,7 @@ function getCategory($conn)
     return pg_query($query);
 }
 
-function getCategoryDetail($conn,$id)
+function getCategoryDetail($conn, $id)
 {
     global $conn;
     $query = "SELECT * FROM danhmuc where iddanhmuc = '$id'";
@@ -151,7 +151,7 @@ ORDER BY sanpham.masanpham ASC;";
     echo '</tr>';
 
     while ($row = pg_fetch_assoc($result)) {
-        echo '<tr>';
+        echo '<tr style="border-width: 1px;">';
         echo '<td align="center">' . $row['masanpham'] . '</td>';
         echo '<td class="tensp">' . $row['tensanpham'] . '</td>';
         echo '<td class="loai" align="center">' . $row['tendanhmuc'] . '</td>';
@@ -159,9 +159,18 @@ ORDER BY sanpham.masanpham ASC;";
         echo '<td align="center">' . number_format($row['gia']) . 'đ' . '</td>';
         echo '<td class="anhsp" width="150px"><img src="../assest/img/thethao/' . $row['hinhanh'] . '" alt="Hình ảnh sản phẩm"></td>';
         echo '<td align="center">' . $row['gioitinh'] . '</td>';
-        echo '<td align="center">';
-        echo '<a href="?page=updateproduct&id=' . $row['masanpham'] . '"><i style="color: black;" class="fa-solid fa-edit"></i></a>';
-        echo '<a href="?page=delproduct&id=' . $row['masanpham'] . '"><i style="color: black;" class="fa-solid fa-trash"></i></a>';
+        echo '<td align="center" class="d-flex" >';
+        echo '<div class="dropright">
+  <a class="btn btn-primary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <i class="fa-solid fa-edit"></i>
+  </a>
+
+  <ul class="dropdown-menu">
+    <li><a class="dropdown-item" href="?page=updateproduct&id=' . $row['masanpham'] . '">Sửa sản phẩm</a></li>
+    <li><a class="dropdown-item" href="?page=updatesize&id=' . $row['masanpham'] . '">Thêm Size</a></li>
+  </ul>
+</div>';
+        echo '<a class="btn btn-danger" href="?page=delproduct&id=' . $row['masanpham'] . '"><i style="color: black;" class="fa-solid fa-trash"></i></a>';
         echo '</td>';
         echo '</tr>';
     }

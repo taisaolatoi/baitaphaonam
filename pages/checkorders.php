@@ -39,27 +39,30 @@
                         <td>
                             <div class="container_main">
                                 <?php
-                                $query1 = "SELECT b.tensanpham, b.hinhanh, c.soluong
+                                $query1 = "SELECT b.tensanpham, b.hinhanh, c.soluong,e.namesize
                                            FROM donhang a
                                            INNER JOIN thongtinkh d on a.id_thongtinkh = d.id
                                            INNER JOIN ctdon c ON a.madonhang = c.madonhang
                                            INNER JOIN sanpham b ON b.masanpham = c.masanpham
-                                           WHERE d.makhachhang = $id AND a.madonhang = $madonhang";
+										   INNER JOIN size_sanpham e ON c.idsize = e.idsize 
+                                           WHERE d.makhachhang = $id AND a.madonhang = $madonhang;";
                                 $result1 = pg_query($conn,$query1);
 
                                 while ($row1 = pg_fetch_assoc($result1)) {
                                     $tensanpham = $row1['tensanpham'];
                                     $hinhanh = $row1['hinhanh'];
                                     $soluong = $row1['soluong'];
+                                    $namesize = $row1['namesize'];
                                     ?>
 
-                                    <div class="container_all">
+                                    <div class="container_all_orders">
                                         <div class="product-name">
                                             <?php echo $tensanpham; ?>
                                         </div>
                                         <div class="product-quantity">
                                             <?php echo $soluong; ?>
                                         </div>
+                                        <p> Size: <?php echo $namesize; ?></p>
                                         <div class="product-img">
                                             <img src="./assest/img/thethao/<?php echo $hinhanh; ?>" alt="">
                                         </div>

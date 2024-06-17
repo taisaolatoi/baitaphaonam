@@ -326,3 +326,8 @@
 .sub-banner p:last-child::after {
     display: none;
 }
+.sizes{
+    display: flex;
+    margin-bottom: 20px;
+    gap: 10px;
+}

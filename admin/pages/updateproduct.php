@@ -15,20 +15,20 @@ if (isset($_GET["id"])) {
     if (isset($_POST['update_product'])) {
         $name = $_POST['product_name'];
         $type = $_POST['product_type'];
-        $quantity = $_POST['product_quantity'];
+        $category = $_POST['product_category'];
         $price = $_POST['product_price'];
         $desc = $_POST['product_description'];
         $img = $product['hinhanh']; // Giữ nguyên giá trị hình ảnh nếu không có tệp tin mới
+        $gender = $_POST['gender'];
 
         if (isset($_FILES['product_img']['tmp_name']) && $_FILES['product_img']['tmp_name'] !== '') {
             move_uploaded_file($_FILES['product_img']['tmp_name'], "../assest/img/thethao/" . $_FILES['product_img']['name']);
             $img = $_FILES['product_img']['name'];
         }
 
-        $gender = $_POST['gender'];
 
 
-        $query = "UPDATE sanpham SET tensanpham='$name', loai='$type', soluong='$quantity', gia='$price', mota='$desc', hinhanh='$img', gioitinh='$gender' WHERE masanpham='$id'";
+        $query = "UPDATE sanpham SET tensanpham='$name', loaisanpham='$type',danhmuc = $category,gioitinh = '$gender', gia='$price', mota='$desc', hinhanh='$img' WHERE masanpham='$id'";
         $result = _query($query);
         if ($result) {
             echo "Sửa thành công!!";
@@ -40,14 +40,32 @@ if (isset($_GET["id"])) {
 ?>
 
 <script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+        var productTypeSelect = document.getElementById("product_type");
+        var tenloaiDefault = "<?php echo $product['tenloai']; ?>";
+
+        // Lặp qua các tùy chọn để thiết lập tùy chọn mặc định
+        var options = productTypeSelect.options;
+        for (var i = 0; i < options.length; i++) {
+            if (options[i].text === tenloaiDefault) {
+                options[i].selected = true;
+                break;
+            }
+        }
+
+        // Gọi hàm updateProductTypes để cập nhật loại sản phẩm
+        var selectedCategoryValue = document.getElementById("product_category").value;
+        updateProductTypes(selectedCategoryValue);
+    });
+
     function updateTypeId() {
-        selectedCategoryValue = document.getElementById("product_category").value;
-        updateProductTypes();
+        var selectedCategoryValue = document.getElementById("product_category").value;
+        updateProductTypes(selectedCategoryValue);
     }
 
-    function updateProductTypes() {
+    function updateProductTypes(selectedCategoryValue) {
         var productTypeSelect = document.getElementById("product_type");
-        productTypeSelect.innerHTML = ""; // Xóa tất cả option hiện có
+        productTypeSelect.innerHTML = ""; // Xóa tất cả các tùy chọn hiện có
 
         var id = selectedCategoryValue;
 
@@ -70,9 +88,8 @@ if (isset($_GET["id"])) {
                 }
             }
         };
-        var masanpham;
-        masanpham = "<?php echo $_SESSION['masanpham']; ?>";
 
+        var masanpham = "<?php echo $_SESSION['masanpham']; ?>";
         var url = "http://localhost/DoAn_1+/admin/pages/getproduct_type.php?id=" + id + "&masanpham=" + masanpham;
 
         xhr.open("GET", url, true);
@@ -124,12 +141,6 @@ if (isset($_GET["id"])) {
     </div>
 
     <div class="form-row">
-        <label for="product_img">Hình ảnh sản phẩm:</label>
-        <input type="file" name="product_img" accept="image/*">
-        <img class="anhsp" src="../assest/img/thethao/<?php echo $product['hinhanh']; ?>" alt="Hình ảnh sản phẩm">
-    </div>
-
-    <div class="form-row">
         <label>Giới tính:</label>
         <div class="input_sex">
             <input type="radio" id="gender_male" name="gender" value="Nam" <?php if ($product['gioitinh'] === 'Nam')
@@ -141,10 +152,19 @@ if (isset($_GET["id"])) {
         </div>
     </div>
 
+    <div class="form-row">
+        <label for="product_img">Hình ảnh sản phẩm:</label>
+        <input type="file" name="product_img" accept="image/*">
+        <img class="anhsp" src="../assest/img/thethao/<?php echo $product['hinhanh']; ?>" alt="Hình ảnh sản phẩm">
+    </div>
+
+
     <div class="form-rowsub">
         <input type="submit" value="Sửa sản phẩm" name="update_product">
     </div>
+
 </form>
+
 
 <style>
     form {
@@ -229,4 +249,5 @@ if (isset($_GET["id"])) {
             padding: 15px;
         }
     }
+
 </style>
